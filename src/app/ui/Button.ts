@@ -6,9 +6,9 @@ import { Label } from "./Label";
 
 const defaultButtonOptions = {
   text: "",
-  width: 301,
+  width: 700,
   height: 112,
-  fontSize: 28,
+  fontSize: 50,
 };
 
 type ButtonOptions = typeof defaultButtonOptions;
@@ -22,7 +22,7 @@ export class Button extends FancyButton {
 
     super({
       defaultView: "button.png",
-      nineSliceSprite: [38, 50, 38, 50],
+      //nineSliceSprite: [38, 50, 38, 50],
       anchor: 0.5,
       text: new Label({
         text: opts.text,
@@ -32,7 +32,7 @@ export class Button extends FancyButton {
           fontSize: opts.fontSize,
         },
       }),
-      textOffset: { x: 0, y: -13 },
+      textOffset: { x: 0, y: 0 },
       defaultTextAnchor: 0.5,
       scale: 0.9,
       animations: {

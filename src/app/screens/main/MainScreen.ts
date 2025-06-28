@@ -1,8 +1,10 @@
 import { FancyButton } from "@pixi/ui";
 import { animate } from "motion";
 import type { AnimationPlaybackControls } from "motion/react";
+import { MenuSprite } from "./MenuSprite";
 import type { Ticker } from "pixi.js";
 import { Container, Text } from "pixi.js";
+
 
 import { engine } from "../../getEngine";
 import { PausePopup } from "../../popups/PausePopup";
@@ -10,26 +12,31 @@ import { SettingsPopup } from "../../popups/SettingsPopup";
 import { Button } from "../../ui/Button";
 
 
+
 /** The screen that holds the app */
 
 export class MainScreen extends Container {
   public static assetBundles = ["main"];
   public mainContainer: Container;
-  private gameLogo: Text;
   
+  
+  private menuImage: MenuSprite;
+  private startButton: Button;
 
   constructor() {
     super();
-
+    this.menuImage = new MenuSprite();
     this.mainContainer = new Container();
     this.addChild(this.mainContainer);
-    this.gameLogo = new Text("Boba Bucks", {
-      fontFamily: "Playpen Sans Arabic",
-      fontSize: 60,
-      fill: "white",
-    });
-    this.addChild(this.gameLogo);
+    this.addChild(this.menuImage);
 
+    this.startButton = new Button({
+      text: "Start",
+      width: 250,
+      height: 70,
+    });
+    //this.startButton.onPress.connect(() => this.bouncer.add());
+    this.addChild(this.startButton);
   }
 
   public resize(width: number, height: number) {
@@ -38,8 +45,12 @@ export class MainScreen extends Container {
 
     this.mainContainer.x = centerX;
     this.mainContainer.y = centerY;
-    this.gameLogo.x = centerX - 170;
-    this.gameLogo.y = centerY - 200;
+    
+    this.menuImage.x = centerX;
+    this.menuImage.y = centerY;
+
+    this.startButton.x = centerX;
+    this.startButton.y = 900;
 
   }
 }
