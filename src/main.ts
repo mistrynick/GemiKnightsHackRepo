@@ -3,29 +3,49 @@ import { LoadScreen } from "./app/screens/LoadScreen";
 import { MainScreen } from "./app/screens/main/MainScreen";
 import { userSettings } from "./app/utils/userSettings";
 import { CreationEngine } from "./engine/engine";
-
-/**
- * Importing these modules will automatically register there plugins with the engine.
- */
 import "@pixi/sound";
-// import "@esotericsoftware/spine-pixi-v8";
+
+declare global {
+  interface Window {
+    WebFontConfig: any;
+  }
+}
 
 // Create a new creation engine instance
 const engine = new CreationEngine();
 setEngine(engine);
 
-(async () => {
-  // Initialize the creation engine instance
-  await engine.init({
-    background: "#1E1E1E",
-    resizeOptions: { minWidth: 768, minHeight: 1024, letterbox: false },
-  });
+// Load the Google WebFont before initializing MainScreen
+window.WebFontConfig = {
+  google: {
+    families: ["Playpen Sans Arabic:100,200,300,400,500,600,700,800"],
+  },
+  async active() {
+    // Initialize the creation engine instance
+    await engine.init({
+      background: "#1E1E1E",
+      resizeOptions: { minWidth: 768, minHeight: 1024, letterbox: false },
+    });
 
-  // Initialize the user settings
-  userSettings.init();
+    // Initialize the user settings
+    userSettings.init();
 
-  // Show the load screen
-  await engine.navigation.showScreen(LoadScreen);
-  // Show the main screen once the load screen is dismissed
-  await engine.navigation.showScreen(MainScreen);
+    // Show the load screen
+    await engine.navigation.showScreen(LoadScreen);
+
+    // Show the main screen once the font and load screen are ready
+    await engine.navigation.showScreen(MainScreen);
+  },
+};
+
+// Inject the WebFont loader script
+(function () {
+  const wf = document.createElement("script");
+  wf.src =
+    (document.location.protocol === "https:" ? "https" : "http") +
+    "://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
+  wf.type = "text/javascript";
+  wf.async = true;
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode!.insertBefore(wf, s);
 })();
