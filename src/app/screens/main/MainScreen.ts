@@ -5,6 +5,7 @@ import { MenuSprite } from "./MenuSprite";
 import type { Ticker } from "pixi.js";
 import { Container, Text } from "pixi.js";
 
+import { GameScreen } from "./GameScreen";
 
 import { engine } from "../../getEngine";
 import { PausePopup } from "../../popups/PausePopup";
@@ -23,6 +24,11 @@ export class MainScreen extends Container {
   private menuImage: MenuSprite;
   private startButton: Button;
 
+  startGame() {
+    const eng = engine();
+    eng.navigation.showScreen(GameScreen);
+  }
+
   constructor() {
     super();
     this.menuImage = new MenuSprite();
@@ -35,7 +41,7 @@ export class MainScreen extends Container {
       width: 250,
       height: 70,
     });
-    //this.startButton.onPress.connect(() => this.bouncer.add());
+    this.startButton.onPress.connect(() => this.startGame());
     this.addChild(this.startButton);
   }
 
