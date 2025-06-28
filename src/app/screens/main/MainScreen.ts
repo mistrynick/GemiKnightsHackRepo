@@ -45,7 +45,7 @@ export class MainScreen extends Container {
       width: 250,
       height: 70,
     });
-    //this.startButton.onPress.connect(() => this.bouncer.add());
+    this.startButton.onPress.connect(() => this.startGame());
     this.addChild(this.startButton);
   }
 

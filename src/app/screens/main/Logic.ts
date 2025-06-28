@@ -20,6 +20,7 @@ export class Logic {
     
     
     
+    
 
     public newCharacter(screen: GameScreen) {
         this.screen = screen;

@@ -1,98 +1,108 @@
-import { Container, Sprite, Graphics, FederatedPointerEvent } from "pixi.js";
+import { Container } from "pixi.js";
+import { VolumeSlider } from "./VolumeSlider";
+import { Sprite } from "pixi.js";
+import { Button } from "./Button";
+import { engine } from "../getEngine";
 
 export class inventory extends Container {
-  private background: Graphics;
+  private cupSlider: VolumeSlider;
+  private milkSlider: VolumeSlider;
+  private teaSlider: VolumeSlider;
+  private bobaSlider: VolumeSlider;
+  private thaiSlider: VolumeSlider;
+  private strawberrySlider: VolumeSlider;
+  private brownSlider: VolumeSlider;
+  private taroSlider: VolumeSlider;
   private inventoryImage: Sprite;
-  private dragging: boolean = false;
-  private dragHandle?: Graphics;
-  private dragStartX: number = 0;
-  private slider: Graphics;
+
+  private closeButton: Button;
+
+  public cupVal:number = 0;
+  
+
+
 
   constructor() {
     super();
 
-    this.background = new Graphics();
-    this.background.interactive = true;
-    this.addChild(this.background);
-
-    // Inventory image
     this.inventoryImage = Sprite.from("inventory.png");
     this.inventoryImage.anchor.set(0.5);
     this.addChild(this.inventoryImage);
 
-    // Close popup on background click
-    this.background.on("pointertap", this.close.bind(this));
+    this.cupSlider = new VolumeSlider("Cup " + this.cupVal, 0, 50);
+    this.cupSlider.onUpdate.connect((v) => {
+        this.cupVal = v;
+        this.cupSlider.messageLabel.text = "Cups " + v;
+    });
+    this.addChild(this.cupSlider);
 
-    // Create slider
-    const sliderWidth = 320;
-    this.slider = new Graphics()
-      .beginFill(0xffb3dc)
-      .drawRect(0, 0, sliderWidth, 4)
-      .endFill();
-    this.addChild(this.slider);
+    this.milkSlider = new VolumeSlider("Milk", 0, 100);
+    this.addChild(this.milkSlider);
 
-    // Create handle
-    const handle = new Graphics()
-      .beginFill(0xffffff)
-      .drawCircle(0, 0, 8)
-      .endFill();
+    this.teaSlider = new VolumeSlider("Tea", 0, 100);
+    this.addChild(this.teaSlider);
 
-    handle.x = sliderWidth / 2;
-    handle.y = 2; // Half of 4 (slider height)
-    handle.eventMode = 'static';
-    handle.cursor = 'pointer';
+    this.bobaSlider = new VolumeSlider("Boba", 0, 100);
+    this.addChild(this.bobaSlider);
 
-    this.dragHandle = handle;
+    this.thaiSlider = new VolumeSlider("Thai Tea", 0, 100);
+    this.addChild(this.thaiSlider);
 
-    handle
-      .on("pointerdown", this.onDragStart, this)
-      .on("pointerup", this.onDragEnd, this)
-      .on("pointerupoutside", this.onDragEnd, this)
-      .on("pointermove", this.onDragMove, this);
+    this.strawberrySlider = new VolumeSlider("Strawberry", 0, 100);
+    this.addChild(this.strawberrySlider);
 
-    this.slider.addChild(handle);
+    this.brownSlider = new VolumeSlider("Brown Sugar", 0, 100);
+    this.addChild(this.brownSlider);
+
+    this.taroSlider = new VolumeSlider("Taro", 0, 100);
+    this.addChild(this.taroSlider);
+
+    this.closeButton = new Button({
+      text: "Close",
+      width: 250,
+      height: 70,
+    });
+    this.closeButton.onPress.connect(() => engine().navigation.dismissPopup());
+    this.addChild(this.closeButton);
+
+    
+ 
   }
-
-  private onDragStart(e: FederatedPointerEvent) {
-    this.dragging = true;
-    this.dragStartX = e.global.x;
-  }
-
-  private onDragEnd() {
-    this.dragging = false;
-  }
-
-  private onDragMove(e: FederatedPointerEvent) {
-    if (!this.dragging || !this.dragHandle) return;
-
-    const localPos = this.slider.toLocal(e.global);
-    const minX = 0;
-    const maxX = this.slider.width;
-
-    this.dragHandle.x = Math.max(minX, Math.min(maxX, localPos.x));
-  }
-
-  public resize(screenWidth: number, screenHeight: number) {
-    const centerX = screenWidth * 0.5;
-    const centerY = screenHeight * 0.5;
-
-    // Inventory Image Centered
+  public resize(width: number, height: number) {
+    const centerX = width * 0.5;
+    const centerY = height * 0.5;
     this.inventoryImage.x = centerX;
     this.inventoryImage.y = centerY;
 
-    // Place slider at bottom-right corner of image
-    const margin = 120;
-    const imageHalfWidth = this.inventoryImage.width * 0.5;
-    const imageHalfHeight = this.inventoryImage.height * 0.5;
+    const sliders = [
+      this.cupSlider,
+      this.milkSlider,
+      this.teaSlider,
+      this.bobaSlider,
+      this.thaiSlider,
+      this.strawberrySlider,
+      this.brownSlider,
+      this.taroSlider,
+    ];
+    const spacing = 50; 
+    let totalHeight = 0;
 
-    this.slider.x = centerX + imageHalfWidth - this.slider.width - margin;
-    this.slider.y = centerY + imageHalfHeight - this.slider.height - margin;
-  }
-
-  public close() {
-    this.destroy({ children: true });
-    if (this.parent) {
-      this.parent.removeChild(this);
+    for (const slider of sliders) {
+      totalHeight += slider.height + spacing;
     }
+    totalHeight -= spacing;
+
+    let currentY = centerY * 0.65;
+
+    for (const slider of sliders) {
+      slider.x = centerX * 0.65;
+      slider.y = currentY;
+      currentY += spacing;
+    }
+    this.closeButton.x = centerX;
+    this.closeButton.y = centerY * 1.7;
+
   }
+
+  
 }

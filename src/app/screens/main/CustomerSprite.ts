@@ -21,7 +21,7 @@ export class CustomerSprite extends Sprite {
           this.custName = name;
         } else {
           super({ texture: Texture.from("pinkboy1.png"), anchor: 0.5, scale: 0.35 });
-          this.name = name;
+          this.custName = name;
 
         }
 

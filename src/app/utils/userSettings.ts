@@ -26,6 +26,12 @@ class UserSettings {
     engine().audio.setMasterVolume(value);
     storage.setNumber(KEY_VOLUME_MASTER, value);
   }
+  public setCups(value: number) {
+    storage.setNumber("cups", value);
+  }
+  public getCups() {
+    return storage.getNumber("cups") ?? 1;
+  }
 
   /** Get background music volume */
   public getBgmVolume() {
