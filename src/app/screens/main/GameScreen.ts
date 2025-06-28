@@ -16,7 +16,7 @@ export class GameScreen extends Container {
         const tex = "gamescene.png";
         this.Scene = new Sprite({texture: Texture.from(tex), anchor: 0.5, scale: 1.0});
         this.addChild(this.Scene);
-        this.logic.newCharacter(this,"blueboy");
+        this.logic.newCharacter(this);
 
 
     }
