@@ -26,19 +26,19 @@ export class Logic {
         const index = randomInt(0,2);
 
         if (index == 0) {
-            const cust = new CustomerSprite("blueboy1.png");
+            const cust = new CustomerSprite("blueboy", 1);
             cust.x = this.startingLocationX;
             cust.y = this.startingLocationY;
             this.CUSTOMERS.push(cust);
             this.screen.addChild(cust);
         } else if (index == 1) {
-            const cust = new CustomerSprite("girl1.png");
+            const cust = new CustomerSprite("girl", 1);
             cust.x = this.startingLocationX;
             cust.y = this.startingLocationY;
             this.CUSTOMERS.push(cust);
             this.screen.addChild(cust);
         } else {
-            const cust = new CustomerSprite("pinkboy1.png");
+            const cust = new CustomerSprite("pinkboy", 1);
             cust.x = this.startingLocationX;
             cust.y = this.startingLocationY;
             this.CUSTOMERS.push(cust);

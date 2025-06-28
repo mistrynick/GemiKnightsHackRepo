@@ -4,6 +4,10 @@ import type { AnimationPlaybackControls } from "motion/react";
 import { MenuSprite } from "./MenuSprite";
 import type { Ticker } from "pixi.js";
 import { Container, Text } from "pixi.js";
+import { inventory } from "../../ui/inventory";
+import { inventory } from "../../ui/inventory";
+
+
 
 import { GameScreen } from "./GameScreen";
 
@@ -41,7 +45,7 @@ export class MainScreen extends Container {
       width: 250,
       height: 70,
     });
-    this.startButton.onPress.connect(() => this.startGame());
+    //this.startButton.onPress.connect(() => this.bouncer.add());
     this.addChild(this.startButton);
   }
 
