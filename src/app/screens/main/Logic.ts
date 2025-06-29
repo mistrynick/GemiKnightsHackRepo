@@ -1,5 +1,6 @@
 import type { GameScreen } from "./GameScreen";
 import { CustomerSprite, DIRECTION } from "./CustomerSprite";
+import { STATE } from "./CustomerSprite";
 import {
   randomBool,
   randomFloat,
@@ -8,67 +9,77 @@ import {
 
 import { Ticker } from "pixi.js";
 
-
 export class Logic {
+  private screen!: GameScreen;
+  private allowSpawning = true;
+  private CUSTOMER_TYPES = ["blueboy", "girl", "pinkboy"];
+  private currentCustomer: CustomerSprite | null = null;
+  private customerQueue: string[] = [];
+  private startingX = 1300;
+private targetX = 700;
+private exitX = 450;
 
-    private screen!: GameScreen;
-    private CUSTOMERS_TYPES = ["blueboy", "girl", "pinkboy"];
+  private spawnDelay = 60; // frames
+  private delayCounter = 0;
 
-    private CUSTOMERS: CustomerSprite[] = [];
-    private startingLocationX = 500;
-    private startingLocationY = 250;
-    
-    
-    
-    
+  public newCharacter(screen: GameScreen) {
+    this.screen = screen;
+    this.customerQueue = []; // reset queue
+  }
 
-    public newCharacter(screen: GameScreen) {
-        this.screen = screen;
-        const index = randomInt(0,2);
+  public animate(ticker: Ticker): void {
+    ticker.add(() => {
+      if (this.allowSpawning && !this.currentCustomer && this.delayCounter <= 0) {
+        const type = this.CUSTOMER_TYPES[randomInt(0, this.CUSTOMER_TYPES.length - 1)];
+        const cust = new CustomerSprite(type, 1);
+        cust.x = this.startingX;
+        cust.y = 750;
+        this.screen.addChild(cust);
+        this.currentCustomer = cust;
+      }
 
-        if (index == 0) {
-            const cust = new CustomerSprite("blueboy", 1);
-            cust.x = this.startingLocationX;
-            cust.y = this.startingLocationY;
-            this.CUSTOMERS.push(cust);
-            this.screen.addChild(cust);
-        } else if (index == 1) {
-            const cust = new CustomerSprite("girl", 1);
-            cust.x = this.startingLocationX;
-            cust.y = this.startingLocationY;
-            this.CUSTOMERS.push(cust);
-            this.screen.addChild(cust);
-        } else {
-            const cust = new CustomerSprite("pinkboy", 1);
-            cust.x = this.startingLocationX;
-            cust.y = this.startingLocationY;
-            this.CUSTOMERS.push(cust);
-            this.screen.addChild(cust);
+      if (this.currentCustomer) {
+        const cust = this.currentCustomer;
+
+        cust.updateAnimation();
+
+        if (cust.state === STATE.ENTERING) {
+          cust.x -= 2;
+          if (cust.x <= this.targetX) {
+            cust.state = STATE.STOPPED;
+            cust.updateAnimation();
+            setTimeout(() => {
+              cust.state = STATE.EXITING;
+              cust.updateAnimation();
+              cust.direction = DIRECTION.LEFT;
+            }, 1000);
+          }
+        } else if (cust.state === STATE.EXITING) {
+          cust.x -= 3;
+          if (cust.x <= this.exitX) {
+            this.screen.removeChild(cust);
+            this.currentCustomer = null;
+            this.delayCounter = this.spawnDelay;
+          }
         }
-        
-    }
-    public resize(w: number, h: number): void {
-        const centerX = w * 0.5;
-        const centerY = h * 0.5;
+      }
 
-        this.CUSTOMERS.forEach((customer) => {
-            customer.x += centerX;
-            customer.y += centerY;
-        });
-    }
+      if (this.delayCounter > 0) {
+        this.delayCounter--;
+      }
+    });
 
-    public async animate(ticker: Ticker): Promise<void> {
-        const speed = 1;
-        let idx = 0;
-        ticker.add(() => {
-            this.CUSTOMERS.forEach((customer) => {
-                customer.x += speed;
-            });
+    ticker.start(); 
+  }
 
-        });
-        
-    }
-
-    
+  public resize(w: number, h: number): void {
+    // Not needed unless screen resizes dynamically
+  }
+  public stopSpawning(): void {
+    this.allowSpawning = false;
+  }
+  public resumeSpawning(): void {
+    this.allowSpawning = true;
+  }
 
 }

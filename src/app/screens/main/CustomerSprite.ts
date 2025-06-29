@@ -6,46 +6,46 @@ export enum DIRECTION {
   LEFT
 }
 
+export enum STATE {
+  ENTERING,
+  STOPPED,
+  EXITING,
+  DONE
+}
+
 export class CustomerSprite extends Sprite {
-    public direction!: DIRECTION;
-    public index: number;
-    private custName: string;
+  public direction: DIRECTION = DIRECTION.RIGHT;
+  public index: number;
+  public state: STATE = STATE.ENTERING;
+  private custName: string;
+  private frameCounter = 0;
 
-    constructor(name:string, inx: number) {
-        
-        if (name == "blueboy") {
-          super({ texture: Texture.from("blueboy1.png"), anchor: 0.5, scale: 0.35 });
-          this.custName = name;
-        } else if (name == "pinkboy") {
-          super({ texture: Texture.from("pinkboy1.png"), anchor: 0.5, scale: 0.35 });
-          this.custName = name;
-        } else {
-          super({ texture: Texture.from("pinkboy1.png"), anchor: 0.5, scale: 0.35 });
-          this.custName = name;
+  constructor(custName: string, inx: number) {
+    super({ texture: Texture.EMPTY, anchor: 0.6, scale: 0.52 });
 
-        }
+    this.custName = custName;
+    this.index = inx;
 
-        
-        this.index = inx;
-        this.direction = 1;
-    }
-    public update() {
-      if (this.index == 1) {
-          if (this.name == "blueboy") {
-            this.texture = Texture.from("blueboy2.png");
-            this.index = 2;
-          }
-      }
-      if (this.index == 2) {
-          if (this.name == "blueboy") {
-            this.texture = Texture.from("blueboy1.png");
-            this.index = 1;
-          }
-      }
-      if (this.index == 3) {
+    this.setTexture(1); // Set initial texture after super
+  }
 
-      }
+  public updateAnimation() {
+    this.frameCounter++;
 
+    if (this.frameCounter % 20 !== 0) return;
+
+    if (this.state === STATE.ENTERING || this.state === STATE.EXITING) {
+      this.index = this.index === 1 ? 2 : 1;
+      this.setTexture(this.index);
     }
 
+    if (this.state === STATE.STOPPED) {
+      this.setTexture("back");
+    }
+  }
+
+  private setTexture(frame: number | "back") {
+    const texName = frame === "back" ? `${this.custName}back.png` : `${this.custName}${frame}.png`;
+    this.texture = Texture.from(texName);
+  }
 }

@@ -1,17 +1,19 @@
 import { Container, Text } from "pixi.js";
 import { Sprite, Texture } from "pixi.js";
 import { Logic } from "./Logic";
+import { Ticker } from "pixi.js";
+import { Button } from "../../ui/Button";
+import { Application } from "pixi.js";
 import { engine } from "../../getEngine";
 import { inventory } from "../../ui/inventory";
-import { Button } from "../../ui/Button";
 
-export class GameScreen extends Container { 
-    public static assetBundles = ["main"];
-    private Scene: Sprite;
-    public mainContainer: Container;
-    private logic: Logic;
-
-    private invButton: Button;
+export class GameScreen extends Container {
+  public static assetBundles = ["main"];
+  private Scene: Sprite;
+  private logic: Logic;
+  private mainContainer: Container;
+  private invButton: Button;
+  private ticker: Ticker;
 
     constructor() {
         super();
@@ -28,8 +30,10 @@ export class GameScreen extends Container {
             width: 250,
             height: 70,
         });
+        this.ticker = new Ticker();
         this.invButton.onPress.connect(() => this.showInventory());
         this.addChild(this.invButton);
+        this.logic.animate(this.ticker);
 
 
     }

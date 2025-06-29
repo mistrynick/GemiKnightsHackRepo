@@ -5,9 +5,6 @@ import { MenuSprite } from "./MenuSprite";
 import type { Ticker } from "pixi.js";
 import { Container, Text } from "pixi.js";
 import { inventory } from "../../ui/inventory";
-import { inventory } from "../../ui/inventory";
-
-
 
 import { GameScreen } from "./GameScreen";
 

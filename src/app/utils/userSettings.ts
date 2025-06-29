@@ -54,6 +54,50 @@ class UserSettings {
     engine().audio.sfx.setVolume(value);
     storage.setNumber(KEY_VOLUME_SFX, value);
   }
+
+  public setMilk(value: number) {
+    storage.setNumber("milk", value);
+  }
+  public getMilk() {
+    return storage.getNumber("milk") ?? 1;
+  }
+
+  public setTeas(value: number) {
+    storage.setNumber("teas", value);
+  }
+  public getTeas() {
+    return storage.getNumber("teas") ?? 1;
+  }
+
+  public setThaiTea(value: number) {
+    storage.setNumber("thaitea", value);
+  }
+  public getThaiTea() {
+    return storage.getNumber("thaitea") ?? 1;
+  }
+
+  public setStrawberry(value: number) {
+    storage.setNumber("strawberry", value);
+  }
+  public getStrawberry() {
+    return storage.getNumber("strawberry") ?? 1;
+  }
+
+  public setBrownsugar(value: number) {
+    storage.setNumber("brownsugar", value);
+  }
+  public getBrownSugar() {
+    return storage.getNumber("brownsugar") ?? 1;
+  }
+
+  public setTaro(value: number) {
+    storage.setNumber("taro", value);
+  }
+  public getTaro() {
+    return storage.getNumber("taro") ?? 1;
+  }
+
+
 }
 
 /** SHared user settings instance */

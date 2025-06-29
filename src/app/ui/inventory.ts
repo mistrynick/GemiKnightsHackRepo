@@ -3,6 +3,7 @@ import { VolumeSlider } from "./VolumeSlider";
 import { Sprite } from "pixi.js";
 import { Button } from "./Button";
 import { engine } from "../getEngine";
+import { userSettings } from "../utils/userSettings";
 
 export class inventory extends Container {
   private cupSlider: VolumeSlider;
@@ -16,8 +17,6 @@ export class inventory extends Container {
   private inventoryImage: Sprite;
 
   private closeButton: Button;
-
-  public cupVal:number = 0;
   
 
 
@@ -29,17 +28,28 @@ export class inventory extends Container {
     this.inventoryImage.anchor.set(0.5);
     this.addChild(this.inventoryImage);
 
-    this.cupSlider = new VolumeSlider("Cup " + this.cupVal, 0, 50);
+    this.cupSlider = new VolumeSlider("Cup " + userSettings.getCups(), 0, 50);
+    this.cupSlider.value = userSettings.getCups();
     this.cupSlider.onUpdate.connect((v) => {
-        this.cupVal = v;
         this.cupSlider.messageLabel.text = "Cups " + v;
+        userSettings.setCups(v);
     });
     this.addChild(this.cupSlider);
 
     this.milkSlider = new VolumeSlider("Milk", 0, 100);
+    this.milkSlider.value = userSettings.getMilk();
+    this.milkSlider.onUpdate.connect((v) => {
+        this.milkSlider.messageLabel.text = "Milk " + v;
+        userSettings.setMilk(v);
+    });
     this.addChild(this.milkSlider);
 
     this.teaSlider = new VolumeSlider("Tea", 0, 100);
+    this.teaSlider.value = userSettings.getTeas();
+    this.teaSlider.onUpdate.connect((v) => {
+        this.teaSlider.messageLabel.text = "Tea " + v;
+        userSettings.setTeas(v);
+    });
     this.addChild(this.teaSlider);
 
     this.bobaSlider = new VolumeSlider("Boba", 0, 100);
