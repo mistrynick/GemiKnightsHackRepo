@@ -82,6 +82,7 @@ class UserSettings {
     return storage.getNumber("teas") ?? 1;
   }
 
+
   public setThaiTea(value: number) {
     storage.setNumber("thaitea", value);
   }

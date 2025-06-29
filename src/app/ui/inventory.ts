@@ -15,13 +15,13 @@ export class inventory extends Container {
   private brownSlider: VolumeSlider;
   private taroSlider: VolumeSlider;
   private inventoryImage: Sprite;
-
   private closeButton: Button;
   private priceSlider: VolumeSlider;
 
 
 
   constructor() {
+
     super();
 
     this.inventoryImage = Sprite.from("inventory.png");
@@ -36,7 +36,7 @@ export class inventory extends Container {
     });
     this.addChild(this.cupSlider);
 
-    this.milkSlider = new VolumeSlider("Milk", 0, 100);
+    this.milkSlider = new VolumeSlider("Milk "+ userSettings.getMilk(), 0, 100);
     this.milkSlider.value = userSettings.getMilk();
     this.milkSlider.onUpdate.connect((v) => {
         this.milkSlider.messageLabel.text = "Milk " + v;
@@ -44,7 +44,7 @@ export class inventory extends Container {
     });
     this.addChild(this.milkSlider);
 
-    this.teaSlider = new VolumeSlider("Tea", 0, 100);
+    this.teaSlider = new VolumeSlider("Tea "+ userSettings.getTeas(), 0, 100);
     this.teaSlider.value = userSettings.getTeas();
     this.teaSlider.onUpdate.connect((v) => {
         this.teaSlider.messageLabel.text = "Tea " + v;
@@ -52,19 +52,44 @@ export class inventory extends Container {
     });
     this.addChild(this.teaSlider);
 
-    this.bobaSlider = new VolumeSlider("Boba", 0, 100);
+    this.bobaSlider = new VolumeSlider("Boba "+ userSettings.getBoba(), 0, 100);
+    this.bobaSlider.value = userSettings.getBoba();
+    this.bobaSlider.onUpdate.connect((v) => {
+        this.bobaSlider.messageLabel.text = "Boba " + v;
+        userSettings.setBoba(v);
+    });
     this.addChild(this.bobaSlider);
 
-    this.thaiSlider = new VolumeSlider("Thai Tea", 0, 100);
+    this.thaiSlider = new VolumeSlider("Thai Tea "+ userSettings.getThaiTea(), 0, 100);
+    this.thaiSlider.value = userSettings.getThaiTea();
+    this.thaiSlider.onUpdate.connect((v) => {
+        this.thaiSlider.messageLabel.text = "Thai Tea " + v;
+        userSettings.setThaiTea(v);
+    });
     this.addChild(this.thaiSlider);
 
-    this.strawberrySlider = new VolumeSlider("Strawberry", 0, 100);
+    this.strawberrySlider = new VolumeSlider("Strawberry "+ userSettings.getStrawberry(), 0, 100);
+    this.strawberrySlider.value = userSettings.getStrawberry();
+    this.strawberrySlider.onUpdate.connect((v) => {
+        this.strawberrySlider.messageLabel.text = "Strawberry " + v;
+        userSettings.setStrawberry(v);
+    });
     this.addChild(this.strawberrySlider);
 
-    this.brownSlider = new VolumeSlider("Brown Sugar", 0, 100);
+    this.brownSlider = new VolumeSlider("Brown Sugar " + userSettings.getBrownSugar(), 0, 100);
+    this.brownSlider.value = userSettings.getBrownSugar();
+    this.brownSlider.onUpdate.connect((v) => {
+        this.brownSlider.messageLabel.text = "Brown Sugar " + v;
+        userSettings.setBrownsugar(v);
+    });
     this.addChild(this.brownSlider);
 
-    this.taroSlider = new VolumeSlider("Taro", 0, 100);
+    this.taroSlider = new VolumeSlider("Taro "+ userSettings.getTaro(), 0, 100);
+    this.taroSlider.value = userSettings.getTaro();
+    this.taroSlider.onUpdate.connect((v) => {
+        this.taroSlider.messageLabel.text = "Taro " + v;
+        userSettings.setTaro(v);
+    });
     this.addChild(this.taroSlider);
 
     this.priceSlider = new VolumeSlider("Price " + userSettings.getPrice(), 1, 20);
@@ -79,7 +104,8 @@ export class inventory extends Container {
       width: 250,
       height: 70,
     });
-    this.closeButton.onPress.connect(() => engine().navigation.dismissPopup());
+    this.closeButton.onPress.connect(() => {
+  engine().navigation.dismissPopup();});
     this.addChild(this.closeButton);
 
     
