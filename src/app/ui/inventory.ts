@@ -17,7 +17,7 @@ export class inventory extends Container {
   private inventoryImage: Sprite;
 
   private closeButton: Button;
-  
+  private priceSlider: VolumeSlider;
 
 
 
@@ -67,6 +67,13 @@ export class inventory extends Container {
     this.taroSlider = new VolumeSlider("Taro", 0, 100);
     this.addChild(this.taroSlider);
 
+    this.priceSlider = new VolumeSlider("Price " + userSettings.getPrice(), 1, 20);
+    this.priceSlider.onUpdate.connect((v) => {
+        this.priceSlider.messageLabel.text = "Price " + v;
+        userSettings.setPrice(v);
+    });
+    this.addChild(this.priceSlider);
+
     this.closeButton = new Button({
       text: "Close",
       width: 250,
@@ -74,6 +81,8 @@ export class inventory extends Container {
     });
     this.closeButton.onPress.connect(() => engine().navigation.dismissPopup());
     this.addChild(this.closeButton);
+
+    
 
     
  
@@ -93,6 +102,7 @@ export class inventory extends Container {
       this.strawberrySlider,
       this.brownSlider,
       this.taroSlider,
+      this.priceSlider
     ];
     const spacing = 50; 
     let totalHeight = 0;

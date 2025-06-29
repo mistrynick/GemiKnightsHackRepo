@@ -32,6 +32,19 @@ class UserSettings {
   public getCups() {
     return storage.getNumber("cups") ?? 1;
   }
+  public getPrice() {
+    return storage.getNumber("price") ?? 1;
+  }
+
+  public getBoba() {
+    return storage.getNumber("boba") ?? 1;
+  }
+  public setBoba(value:number) {
+    return storage.setNumber("boba", value);
+  }
+  public setPrice(value:number) {
+    return storage.setNumber("price", value);
+  }
 
   /** Get background music volume */
   public getBgmVolume() {
@@ -95,6 +108,13 @@ class UserSettings {
   }
   public getTaro() {
     return storage.getNumber("taro") ?? 1;
+  }
+
+  public setFinished(value: boolean) {
+    storage.setBool("finished", value);
+  }
+  public getStatus() {
+    return storage.getBool("finished");
   }
 
 

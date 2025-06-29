@@ -26,7 +26,7 @@ export class CustomerSprite extends Sprite {
     this.custName = custName;
     this.index = inx;
 
-    this.setTexture(1); // Set initial texture after super
+    this.setTexture(1); 
   }
 
   public updateAnimation() {
