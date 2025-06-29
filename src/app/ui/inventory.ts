@@ -4,6 +4,7 @@ import { Sprite } from "pixi.js";
 import { Button } from "./Button";
 import { engine } from "../getEngine";
 import { userSettings } from "../utils/userSettings";
+import { GameScreen } from "../screens/main/GameScreen";
 
 export class inventory extends Container {
   private cupSlider: VolumeSlider;
@@ -104,8 +105,7 @@ export class inventory extends Container {
       width: 250,
       height: 70,
     });
-    this.closeButton.onPress.connect(() => {
-  engine().navigation.dismissPopup();});
+    this.closeButton.onPress.connect(() => {this.close()});
     this.addChild(this.closeButton);
 
     
@@ -148,6 +148,10 @@ export class inventory extends Container {
     this.closeButton.x = centerX;
     this.closeButton.y = centerY * 1.7;
 
+  }
+  public close() {
+    userSettings.setFinished(false);
+    engine().navigation.dismissPopup();
   }
 
   

@@ -45,7 +45,7 @@ class UserSettings {
   public setPrice(value:number) {
     return storage.setNumber("price", value);
   }
-
+ 
   /** Get background music volume */
   public getBgmVolume() {
     return storage.getNumber(KEY_VOLUME_BGM) ?? 1;

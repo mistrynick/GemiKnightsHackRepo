@@ -198,6 +198,10 @@ public clearDrinks(): void {
     return this.costs[ingredientType];
   }
 
+  public returnNetProfit(): number {
+    return this.calculateTotalProfit(userSettings.getPrice());
+  }
+
 
 
   public animate(ticker: Ticker, screen: GameScreen): void {
@@ -218,14 +222,20 @@ public clearDrinks(): void {
 
         if (cust.state === STATE.ENTERING) {
           cust.x -= 2;
+          
           if (cust.x <= this.targetX) {
             cust.state = STATE.STOPPED;
             cust.updateAnimation();
-            this.sell();
-            screen.updateProfitDisplay(screen.profitVal+=userSettings.getPrice());
+            const result = this.sell();
+            if (!result) {
+                screen.showInventory();
+            }
+            console.log(this.drinks.length);
+            screen.updateProfitDisplay(this.returnNetProfit());
             setTimeout(() => {
               cust.state = STATE.EXITING;
               cust.updateAnimation();
+              screen.customers+=1;
               cust.direction = DIRECTION.LEFT;
             }, 1000);
           }

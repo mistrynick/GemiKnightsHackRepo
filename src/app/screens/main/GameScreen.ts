@@ -16,6 +16,7 @@ export class GameScreen extends Container {
   private ticker: Ticker;
   public profitLabel: Text;
   public profitVal: number = 0.0;
+  public customers = 0;
 
     constructor() {
         super();
@@ -40,20 +41,37 @@ export class GameScreen extends Container {
         });
         this.ticker = new Ticker();
         this.invButton.onPress.connect(() => this.showInventory());
-        this.addChild(this.invButton);
+        //this.addChild(this.invButton);
+        
         this.logic.animate(this.ticker, this);
+        
 
 
+    }
+
+    public resetGame() {
+        this.customers = 0;
+        this.ticker.start();
+        console.log("asdf");
     }
     public updateProfitDisplay(profit:number): void {
         this.profitVal = profit;
+
         this.profitLabel.text = `$${this.profitVal.toFixed(2)}`;
+        if (this.customers >= 2) {
+            this.showInventory();
+
+        }
     }
 
-    public showInventory() {
+    public async showInventory() {
         
         const eng = engine();
-        eng.navigation.presentPopup(inventory);
+        this.ticker.stop();
+        await eng.navigation.presentPopup(inventory);
+        this.resetGame();
+        //this.ticker.stop();
+        
     }
 
     public resize(width: number, height: number) {
